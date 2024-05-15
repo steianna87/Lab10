@@ -16,6 +16,8 @@ class View(ft.UserControl):
 
         self._txt_result = None
 
+        self.stato = None
+
     def load_interface(self):
         # title
         self._title = ft.Text("Country Borders", color="blue", size=24)
@@ -59,4 +61,8 @@ class View(ft.UserControl):
 
     def popola_ddState(self):
         for stato in self._controller._model.grafo:
-            self._ddState.options.append(ft.dropdown.Option(data=stato, text=f"{stato}"))
+            self._ddState.options.append(ft.dropdown.Option(data=stato, text=f"{stato}",
+                                                            on_click=self.read_country))
+
+    def read_country(self, e):
+        self.stato = e.control.data

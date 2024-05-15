@@ -30,13 +30,30 @@ class Controller:
 
         self._view.popola_ddState()
         self._view._ddState.value = None
+        self._view.stato = None
         self._view.update_page()
 
     def handleRaggiungibili(self, e):
         self._view._txt_result.controls.clear()
-        stato = self._view._ddState.value
+        stato = self._view.stato
         if stato is None:
             self._view.create_alert('selezionare uno stato')
             return
+
         self._model.calcolaPercorso(stato)
+        self._model.calcolaPercorsoRicorsivo(stato)
+        self._model.calcolaPercorsoIterativo(stato)
+
+        self._view._txt_result.controls.append(ft.Text(f'Stati raggiungibili a partire da {stato}:'))
+        self._view._txt_result.controls.append(
+            ft.Text(f'Raggiunti {len(self._model.raggiungibili)}:'))
+        for stato in self._model.raggiungibili:
+            self._view._txt_result.controls.append(
+                ft.Text(f'-{stato}'))
+
+        self._view.update_page()
+
+
         print(self._model.raggiungibili)
+        print(self._model.raggiungibili_ricorsivo)
+        print(self._model.raggiungibili_iterativo)
